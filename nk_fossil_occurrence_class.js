@@ -6,7 +6,7 @@ class nk_fossil_occurrence_cluster {
     }
     add_occurrence(a_occ){
 
-    }
+    } 
 }
 // First, checks if it isn't implemented yet.
 if (!String.prototype.format) {
