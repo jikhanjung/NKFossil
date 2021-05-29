@@ -51,6 +51,11 @@
 		text-align-last:center;
 	  }
 
+	  .map_tile {
+		  opacity: 0.5;
+	  }
+
+
 	</style>
 	<script>
 
@@ -361,8 +366,10 @@ kakao.maps.Tileset.add('TILE_NUMBER',
         	var mult = 2 ** ( 13 - z );
         	var div = document.createElement('div'); 
         	if( x >= mult * 2 || y >= mult * 5) { return div; }
-        	if( z < 8 || z > 13 || x < 0 || y < 0 ) { return div;}
+        	if( z < 7 || z > 13 || x < 0 || y < 0 ) { return div;}
             var img = document.createElement('img');
+			//img.style.opacity = 0.5;
+			img.classList.add("map_tile");
             img.src = 'map_tiles/' + z + '/' + x + '_' + y + '.png';
             return img;
         }
