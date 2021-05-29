@@ -18,7 +18,7 @@ def make_transparent(img):
 
 
 # Opens a image in RGB mode
-im_src = Image.open(r"C:\Users\Admin\conda_projects\NKFossil\KoreaGeolMap3.png")
+im_src = Image.open(r"KoreaGeolMap3.png")
 im = im_src.rotate(0.3)
 
 factor = 1.5
@@ -47,7 +47,7 @@ for level in range(13,5,-1):
     mult = 2**(13 - level)
     width = orig_width / mult
     height= orig_height / mult
-    level_dir = "map_tiles_rotation/{0}".format(level)
+    level_dir = "map_tiles/{0}".format(level)
     print("level:", level)
     if( not os.path.isdir(level_dir) ):
         os.mkdir( level_dir )
@@ -59,7 +59,7 @@ for level in range(13,5,-1):
             top = bottom - height
             cropped_image = padded_img.crop((left, top, right, bottom)).resize((256,256))
             transparent_image = make_transparent( cropped_image )
-            transparent_image.save("map_tiles_rotation/{0}/{1}_{2}.png".format(level,i,j))
+            transparent_image.save("map_tiles/{0}/{1}_{2}.png".format(level,i,j))
             
 #im1 = padded_img.crop((left, top, right, bottom)).resize((256,256))
   

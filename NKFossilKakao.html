@@ -21,7 +21,7 @@
 				<input id="geolmap" type="checkbox" checked onClick="javascript:toggle_geolmap();"><span id="geolmap_span">GeolMap</span></input>
 		</div>
 	</div>
-	<div id="select_div" style="position:absolute;left:20px;top:100px;height:90vh;width:120px;z-index:10;">
+	<div id="select_div" style="position:absolute;left:20px;top:110px;height:90vh;width:120px;z-index:10;">
 	</div>
 	<!--div id="finid_div" style="position:absolute;left:130px;top:20px;height:90vh;width:10vw;z-index:20;"></div-->
 	<div id="map" style="position:absolute;top:0px;left:0px;height:100%;width:100%;z-index:0;"></div>
@@ -379,6 +379,8 @@ kakao.maps.Tileset.add('TILE_NUMBER',
 // 지도 위에 TILE_NUMBER 오버레이 레이어를 추가합니다
 var show_tile = true;
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TILE_NUMBER);
+map.setMinLevel(7);
+map.setMaxLevel(13);
 
 
 </script>

@@ -21,6 +21,8 @@ if (!String.prototype.format) {
     };
  }
 
+
+
 class nk_fossil_location {
     constructor(id,latitude, longitude) {
         this.id = id;
@@ -36,6 +38,18 @@ class nk_fossil_location {
         this.display_row = 0;
         this.visible = true;
         this.position  = new kakao.maps.LatLng(this.latitude, this.longitude);
+
+        var imageSrc_t = 'trilobite_icon_tiny.png', // 마커이미지의 주소입니다    
+        imageSize_t = new kakao.maps.Size(32, 32), // 마커이미지의 크기입니다
+        imageOption_t = {offset: new kakao.maps.Point(20, 32)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        var markerImage_t = new kakao.maps.MarkerImage(imageSrc_t, imageSize_t, imageOption_t);
+
+        var imageSrc_b = 'brachiopod_icon_white_tiny.png', // 마커이미지의 주소입니다    
+        imageSize_b = new kakao.maps.Size(32, 26), // 마커이미지의 크기입니다
+        imageOption_b = {offset: new kakao.maps.Point(16, 26)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        var markerImage_b = new kakao.maps.MarkerImage(imageSrc_b, imageSize_b, imageOption_b);
+
+
         this.marker_instance = new kakao.maps.Marker({position: this.position});
         this.custom_overlay_instance = new kakao.maps.CustomOverlay({position: this.position, xAnchor:0.5,yAnchor:3.5});
         //this.custom_overlay_instance.setMap()
