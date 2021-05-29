@@ -99,7 +99,7 @@ class nk_fossil_location {
     }
 
     update_content(){
-        console.log("update_content", this.id);
+        //console.log("update_content", this.id);
 
         var total_count = 0;
         var l_occurrence_hash = {}

@@ -81,7 +81,7 @@ var location_hash = {};
 var option_hash = {};
 
 var age_formation_species_hash = {}
-console.log(occurrence_list.length);
+//console.log(occurrence_list.length);
 
 for(var occ_idx=0;occ_idx<occurrence_list.length;occ_idx++){
 	var occurrence_data = occurrence_list[occ_idx];
@@ -190,7 +190,7 @@ function filter_age(){
 	return l_selected_age_list;
 }
 
-function filter_occurrences(selected_age_list, fit_view_to_window){
+function filter_occurrences(selected_age_list=[], fit_view_to_window=true){
 	console.log("filter occ", selected_age_list);
 	var local_bounds = new kakao.maps.LatLngBounds();
 	var bounds_count = 0;
@@ -210,8 +210,8 @@ function filter_occurrences(selected_age_list, fit_view_to_window){
 		var occ = occurrence_list[occ_idx];
 		//console.log("occ:",occ);
 		occ['visible'] = false;
-		if( selected_age_list.includes(occ['strat_range']) ){
-			//console.log("show", occ['strat_range'], selected_age_list);
+		if( selected_age_list.includes(occ['strat_range']) && occ['location'] != undefined ){
+			console.log("show", occ['strat_range'], selected_age_list, occ['location']);
 			occ['visible'] = true;
 			occ['location'].set_visible(true);
 		} else {
@@ -381,7 +381,7 @@ var show_tile = true;
 map.addOverlayMapTypeId(kakao.maps.MapTypeId.TILE_NUMBER);
 map.setMinLevel(7);
 map.setMaxLevel(13);
-
+filter_occurrences( age_list, true);
 
 </script>
 </body>
