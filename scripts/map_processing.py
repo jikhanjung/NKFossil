@@ -5,41 +5,79 @@ import cv2
 import numpy
 
 
-img = cv2.imread('SegmentationTest.png', cv2.IMREAD_COLOR)
+img = cv2.imread('data/KoreaGeolMapLithoOnly2.png', cv2.IMREAD_COLOR)
+#img = cv2.imread('data/SegmentationTest.png', cv2.IMREAD_COLOR)
+
 img.shape
 width = img.shape[0]
 height = img.shape[1]
 
+print("width:",width,"height:",height)
+
 color_map = []
 image_hash = {}
 
-for i in range(width):
-    for j in range(height):
+import time
+
+start = time.time()
+
+def crop_background( a_img ):
+
+    l_grayscale = cv2.cvtColor(a_img, cv2.COLOR_BGR2GRAY)
+    print(type(l_grayscale))
+
+    ret, l_thresholded = cv2.threshold(l_grayscale, 0, 255, cv2.THRESH_OTSU)
+    print(type(l_thresholded))
+    print(ret)
+
+    l_bbox = cv2.boundingRect(l_thresholded)
+
+    l_x, l_y, l_w, l_h = l_bbox
+
+    l_foreground = img[l_y:l_y+l_h, l_x:l_x+l_w]
+    #print(type(l_thresholded))
+    print(l_x,l_y,l_w,l_h)
+    cv2.imwrite("data/tmp/thre.png",l_foreground)
+
+    return l_bbox, l_foreground
+
+bbox, foreground = crop_background(~img)
+x,y,w,h = bbox
+
+
+for i in range(y,y+h):
+    for j in range(x,x+w):
         color_val = "_".join([ str(k) for k in img[i][j]])
         if color_val == '255_255_255':
             continue
         if color_val not in color_map:
             print(color_val)
             color_map.append(color_val)
-            new_img = numpy.zeros((width+2,height+2),numpy.uint8)
+            new_img = numpy.zeros((width,height),numpy.uint8)
             image_hash[color_val] = new_img
-        image_hash[color_val][i+1][j+1] = 255
+        image_hash[color_val][i][j] = 255
 
 #color_map.remove('255_255_255')
 print( color_map )
 
+end = time.time()
+print("elapsed time 1:",end - start)
+
 for color_key in color_map:
-    cv2.imwrite(color_key+".png",image_hash[color_key])
+    cv2.imwrite("data/tmp/"+color_key+".png",image_hash[color_key])
 
 
 
 def process_contour( image, factor=1):
 
-    l_img = image #cv2.imread(img_key + '.png', 0)
-    print("image shape:", l_img.shape )
+    w, h = image.shape[0], image.shape[1]
+    print("in image shape:", image.shape )
+    l_img = numpy.zeros((w+2,h+2),numpy.uint8)
+    l_img[1:-1,1:-1] = image #cv2.imread(img_key + '.png', 0)
+    print("working image shape:", l_img.shape )
     
     contours = find_contours(l_img, 0)
-    result_contour = np.zeros((l_img.shape[0]*factor,l_img.shape[1]*factor)+(3,), np.uint8)
+    result_contour = np.zeros((image.shape[0]*factor,image.shape[1]*factor)+(3,), np.uint8)
     #result_polygon1 = np.zeros((l_img.shape[0]*2,l_img.shape[1]*2)+(3,), np.uint8)
     #print("contour image shape:", result_contour.shape )
 
@@ -88,7 +126,7 @@ for k in image_hash.keys():
     print("process:", k)
     processed_image = process_contour( image_hash[k], factor )
     #processed_image_hash[k] = processed_image
-    cv2.imwrite(k+"_processed.png",processed_image)
+    cv2.imwrite("data/tmp/"+k+"_processed.png",processed_image)
 
 
 factor = 2
@@ -98,19 +136,29 @@ combined_image = numpy.ones((width*factor,height*factor,3),numpy.uint8)*255
 white_value = numpy.array([255,255,255])
 print(white_value)
 for k in image_hash.keys():
-    part_image = cv2.imread(k+"_processed.png")
-    print(part_image.shape)
+    part_image = cv2.imread("data/tmp/"+k+"_processed.png")
+
+    l_bbox, l_foreground = crop_background(part_image)
+    l_x,l_y,l_w,l_h = l_bbox
+    print(l_bbox)
+
+    print(part_image.shape,combined_image.shape)
     print("processing image for color value:", k )
     #processed_image_hash[k]
+
     color_val = k.split("_")
-    for i in range(width*factor):
-        for j in range(height*factor):
+    for i in range(l_y,l_y+l_h):
+        for j in range(l_x,l_x+l_w):
             #if "_".join([str(x) for x in part_image[i+1][j+1]]) == "255_255_255":
             #print( part_image[i+1][j+1], type(part_image[i+1][j+1]), white_value, type(white_value))
-            if (part_image[i+1][j+1] == white_value).all():
+            #print(i,j)#
+            if (part_image[i][j] == white_value).all():
                 #print( part_image[i+1][j+1], white_value )
                 #break
                 combined_image[i][j] = color_val
-    cv2.imwrite( "combined.png",combined_image)
+    cv2.imwrite( "data/combined.png",combined_image)
 
-cv2.imwrite( "combined.png",combined_image)
+cv2.imwrite( "data/combined.png",combined_image)
+
+end = time.time()
+print("total time:",end - start)
