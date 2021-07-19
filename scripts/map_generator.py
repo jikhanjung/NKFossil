@@ -18,7 +18,7 @@ def make_transparent(img):
 
 
 # Opens a image in RGB mode
-im_src = Image.open(r"KoreaGeolMap3.png")
+im_src = Image.open(r"data/KoreaGeolMap3.png")
 im = im_src.rotate(0.3)
 
 factor = 1.5
@@ -43,6 +43,8 @@ top = orig_bottom + orig_height
   
 # Cropped image of above dimension
 # (It will not change orginal image)
+if( not os.path.isdir('map_tiles') ):
+    os.mkdir( 'map_tiles' )
 for level in range(13,5,-1):
     mult = 2**(13 - level)
     width = orig_width / mult
