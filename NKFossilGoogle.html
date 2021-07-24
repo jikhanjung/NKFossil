@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ground Overlays</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+    
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }    
+        </style>
+      <body>
+        <div id="map"></div>
+    </style>
+    <script>
+        // This example uses a GroundOverlay to place an image on the map
+// showing an antique map of Newark, NJ.
+let historicalOverlay;
+
+function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 5,
+    center: { lat: 82, lng: -35 },
+  });
+  const imageBounds1 = {
+    north: 43.7,
+    south: 33,
+    east: 132.8,
+    west: 121.9,
+  };
+  var overlayOpts1 = {
+      opacity:0.3
+  }  
+  historicalOverlay1 = new google.maps.GroundOverlay(
+    "data/KoreaGeolMap3.png",
+    imageBounds1,
+    overlayOpts1
+  );
+  historicalOverlay1.setMap(map);
+
+  const imageBounds2 = {
+    north: 84.26094519156995,
+    south: 79.62487095621667,
+    east: -10,
+    west: -75.20098584123089,
+  };
+  var overlayOpts2 = {
+      opacity:0.3
+  }  
+  historicalOverlay2 = new google.maps.GroundOverlay(
+    "data/north_greenland.jpg",    
+    imageBounds2,
+    overlayOpts2
+  );
+  historicalOverlay2.setMap(map);
+
+}
+    </script>
+    <!-- jsFiddle will insert css and js -->
+  </head>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=&v=weekly&channel=2"
+      async
+    ></script>
+  </body>
+</html>
